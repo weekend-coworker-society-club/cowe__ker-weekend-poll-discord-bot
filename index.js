@@ -58,7 +58,7 @@ async function createWeeklyPollAndExit() {
     console.log("Discord 봇에 연결 중...");
 
     await new Promise((resolve, reject) => {
-      client.once("ready", resolve);
+      client.once("clientReady", resolve); // ✅ ready → clientReady 로 변경
       client.once("error", reject);
       client.login(BOT_TOKEN);
     });
@@ -80,25 +80,15 @@ async function createWeeklyPollAndExit() {
         text: `모각작 ${currentEpisode}회차 참가 모집`,
       },
       answers: [
-        {
-          poll_media: {
-            text: `토요일 (${dates.saturday})`,
-          },
-        },
-        {
-          poll_media: {
-            text: `일요일 (${dates.sunday})`,
-          },
-        },
+        { text: `토요일 (${dates.saturday})` }, // ✅ poll_media 제거
+        { text: `일요일 (${dates.sunday})` },
       ],
-      duration: 72,
+      duration: 72, // 투표 유지 시간(시간 단위)
       allow_multiselect: true,
       layout_type: PollLayoutType.Default,
     };
 
-    await channel.send({
-      poll: poll,
-    });
+    await channel.send({ poll });
 
     console.log(
       `✅ 모각작 ${currentEpisode}회차 투표가 성공적으로 게시되었습니다!`
@@ -110,7 +100,6 @@ async function createWeeklyPollAndExit() {
     console.error("❌ 오류 발생:", error);
     process.exit(1);
   } finally {
-    // 작업 완료 후 봇 종료
     console.log("봇을 종료합니다...");
     client.destroy();
     process.exit(0);
