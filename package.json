@@ -1,0 +1,20 @@
+{
+  "name": "cowe__ker-weekend-poll-bot",
+  "version": "1.0.0",
+  "description": "주말 모각작 GitHub Actions Discord 주간 투표 봇",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.22.1"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "poll",
+    "github-actions"
+  ],
+  "author": "DrunkenNeoguri(developneoguri@gmail.com)",
+  "license": "MIT"
+}

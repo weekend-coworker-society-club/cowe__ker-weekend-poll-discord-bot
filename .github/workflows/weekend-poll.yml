@@ -1,0 +1,30 @@
+name: Weekly Discord Poll
+
+on:
+  schedule:
+    - cron: "0 15 * * 0"
+
+  workflow_dispatch:
+
+jobs:
+  create-poll:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Node.js 설정
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: 의존성 설치
+        run: npm install
+
+      - name: Discord 투표 생성
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+          POLL_CHANNEL_ID: ${{ secrets.POLL_CHANNEL_ID }}
+        run: node bot.js
