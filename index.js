@@ -11,7 +11,9 @@ const client = new Client({
 const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
 const POLL_CHANNEL_ID = process.env.POLL_CHANNEL_ID;
 
-const STARTING_EPISODE = 32;
+// 매년 1회차 시작은 아래 코드에서 수정할 것.
+const BASE_DATE = new Date("2025-09-22");
+const BASE_EPISODE = 31;
 
 function formatDateKorean(date) {
   const options = {
@@ -23,15 +25,19 @@ function formatDateKorean(date) {
   return date.toLocaleDateString("ko-KR", options);
 }
 
-// 현재 회차 계산 함수
+// 현재 주차 회차 계산 함수
 function calculateCurrentEpisode() {
-  const baseDate = new Date("2024-01-01");
   const now = new Date();
 
-  const timeDiff = now.getTime() - baseDate.getTime();
-  const weeksPassed = Math.floor(timeDiff / (1000 * 60 * 60 * 24 * 7));
+  const monday = new Date(now);
+  const daysSinceMonday = (now.getDay() + 6) % 7;
+  monday.setDate(now.getDate() - daysSinceMonday);
 
-  return STARTING_EPISODE + weeksPassed;
+  const weeksPassed = Math.floor(
+    (monday.getTime() - BASE_DATE.getTime()) / (1000 * 60 * 60 * 24 * 7)
+  );
+
+  return BASE_EPISODE + weeksPassed;
 }
 
 function getWeekendDates() {
@@ -58,7 +64,7 @@ async function createWeeklyPollAndExit() {
     console.log("Discord 봇에 연결 중...");
 
     await new Promise((resolve, reject) => {
-      client.once("clientReady", resolve); // ✅ ready → clientReady 로 변경
+      client.once("clientReady", resolve);
       client.once("error", reject);
       client.login(BOT_TOKEN);
     });
@@ -71,19 +77,21 @@ async function createWeeklyPollAndExit() {
     }
 
     const dates = getWeekendDates();
-    const currentEpisode = calculateCurrentEpisode();
 
-    console.log(`📅 현재 회차: ${currentEpisode}회차`);
+    // 이번 주 회차 계산 후 +1 해서 "다음 회차" 투표
+    const currentEpisode = calculateCurrentEpisode() + 1;
+
+    console.log(`📅 현재 투표 회차: ${currentEpisode}회차`);
 
     const poll = {
       question: {
         text: `모각작 ${currentEpisode}회차 참가 모집`,
       },
       answers: [
-        { text: `토요일 (${dates.saturday})` }, // ✅ poll_media 제거
+        { text: `토요일 (${dates.saturday})` },
         { text: `일요일 (${dates.sunday})` },
       ],
-      duration: 72, // 투표 유지 시간(시간 단위)
+      duration: 72,
       allow_multiselect: true,
       layout_type: PollLayoutType.Default,
     };
