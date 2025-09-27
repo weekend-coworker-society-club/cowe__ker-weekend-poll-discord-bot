@@ -17,9 +17,6 @@ on:
     # 수요일 20시 (UTC 11:00 = KST 20:00)
     - cron: "0 11 * * 3"
 
-  # 수동 실행도 가능하게 설정
-  workflow_dispatch:
-
 jobs:
   send-reminder:
     runs-on: ubuntu-latest
