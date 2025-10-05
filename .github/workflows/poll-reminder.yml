@@ -1,21 +1,22 @@
 name: Vote Reminder
 
 on:
-  schedule:
-    # 월요일 10시 (UTC 01:00 = KST 10:00)
-    - cron: "0 1 * * 1"
-    # 월요일 20시 (UTC 11:00 = KST 20:00)
-    - cron: "0 11 * * 1"
+  # schedule:
+  #   # 월요일 10시 (UTC 01:00 = KST 10:00)
+  #   - cron: "0 1 * * 1"
+  #   # 월요일 20시 (UTC 11:00 = KST 20:00)
+  #   - cron: "0 11 * * 1"
 
-    # 화요일 10시 (UTC 01:00 = KST 10:00)
-    - cron: "0 1 * * 2"
-    # 화요일 20시 (UTC 11:00 = KST 20:00)
-    - cron: "0 11 * * 2"
+  #   # 화요일 10시 (UTC 01:00 = KST 10:00)
+  #   - cron: "0 1 * * 2"
+  #   # 화요일 20시 (UTC 11:00 = KST 20:00)
+  #   - cron: "0 11 * * 2"
 
-    # 수요일 10시 (UTC 01:00 = KST 10:00)
-    - cron: "0 1 * * 3"
-    # 수요일 20시 (UTC 11:00 = KST 20:00)
-    - cron: "0 11 * * 3"
+  #   # 수요일 10시 (UTC 01:00 = KST 10:00)
+  #   - cron: "0 1 * * 3"
+  #   # 수요일 20시 (UTC 11:00 = KST 20:00)
+  #   - cron: "0 11 * * 3"
+  workflow_dispatch:
 
 jobs:
   send-reminder:
@@ -34,8 +35,8 @@ jobs:
       - name: 의존성 설치
         run: npm install
 
-      - name: 투표 참가 알림 전송
-        env:
-          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
-          REMINDER_CHANNEL_ID: ${{ secrets.REMINDER_CHANNEL_ID }}
-        run: node reminder.js
+      # - name: 투표 참가 알림 전송
+      #   env:
+      #     DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+      #     REMINDER_CHANNEL_ID: ${{ secrets.REMINDER_CHANNEL_ID }}
+      #   run: node reminder.js
