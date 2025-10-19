@@ -47,6 +47,7 @@ function getWeekendDates() {
   const daysSinceMonday = (now.getDay() + 6) % 7;
   monday.setDate(now.getDate() - daysSinceMonday);
 
+  // 현재 주의 토요일과 일요일 계산
   const saturday = new Date(monday);
   saturday.setDate(monday.getDate() + 5);
 

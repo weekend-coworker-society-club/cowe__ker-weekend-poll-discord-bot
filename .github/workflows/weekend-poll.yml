@@ -2,7 +2,7 @@ name: Weekly Discord Poll
 
 on:
   schedule:
-    - cron: "50 14 * * 0"
+    - cron: "0 15 * * 0"
 
 jobs:
   create-poll:
